@@ -1,0 +1,6 @@
+{
+  "name": "JD Imaging Corp.",
+  "description": "Premier medical imaging equipment, rentals, white-label field service, and specialized Fuji CR repairs serving Northern Illinois and Southern Wisconsin.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

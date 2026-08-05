@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    @apply font-sans antialiased text-slate-900 bg-slate-50 selection:bg-blue-500 selection:text-white;
+  }
+}
+
+/* Custom crisp grid background pattern */
+.bg-medical-grid {
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Custom scrollbar for clean modals */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.3);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.5);
+}
