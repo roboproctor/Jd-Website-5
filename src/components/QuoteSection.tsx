@@ -6,10 +6,8 @@ import {
   MapPin, 
   CheckCircle2, 
   Loader2, 
-  Clock, 
-  ShieldCheck,
-  Building2,
-  X
+  Building2, 
+  X 
 } from 'lucide-react';
 import { QuoteFormData, RequestType } from '../types';
 
@@ -40,26 +38,48 @@ export const QuoteSection: React.FC<QuoteSectionProps> = ({
 
   const [loading, setLoading] = useState(false);
   const [submittedRef, setSubmittedRef] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.contactName || !formData.email || !formData.phone) return;
 
     setLoading(true);
+    setErrorMessage(null);
+
+    const generatedRef = `JDI-${Math.floor(100000 + Math.random() * 900000)}`;
 
     try {
-      const response = await fetch('/api/quote', {
+      const response = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          access_key: '0b24647c-201b-47bd-a6ba-9cd3fe80b594',
+          subject: `New Service Request [${generatedRef}] - ${formData.companyName || formData.contactName}`,
+          from_name: 'JD Imaging Corp Website',
+          contact_name: formData.contactName,
+          company_name: formData.companyName,
+          email: formData.email,
+          phone: formData.phone,
+          region: formData.region,
+          request_type: formData.requestType,
+          message: formData.details,
+          reference_number: generatedRef
+        })
       });
 
       const data = await response.json();
+
       if (data.success) {
-        setSubmittedRef(data.referenceNumber);
+        setSubmittedRef(generatedRef);
+      } else {
+        setErrorMessage(data.message || 'Failed to send request. Please try calling us directly.');
       }
     } catch (err) {
-      setSubmittedRef(`JDI-${Math.floor(100000 + Math.random() * 900000)}`);
+      setErrorMessage('Network error. Please check your connection or contact us by phone.');
     } finally {
       setLoading(false);
     }
@@ -87,6 +107,12 @@ export const QuoteSection: React.FC<QuoteSectionProps> = ({
           </button>
         )}
       </div>
+
+      {errorMessage && (
+        <div className="mb-4 p-3.5 rounded-xl bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 text-xs font-semibold">
+          {errorMessage}
+        </div>
+      )}
 
       <form onSubmit={handleSubmit} className="space-y-4">
         
@@ -163,7 +189,7 @@ export const QuoteSection: React.FC<QuoteSectionProps> = ({
             </label>
             <select
               value={formData.region}
-              onChange={(e: any) => setFormData({ ...formData, region: e.target.value })}
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFormData({ ...formData, region: e.target.value })}
               className={`w-full p-2.5 rounded-xl text-xs border ${
                 darkMode ? 'bg-slate-950 border-slate-800 text-white' : 'bg-slate-50 border-slate-200'
               }`}
@@ -182,7 +208,7 @@ export const QuoteSection: React.FC<QuoteSectionProps> = ({
           </label>
           <select
             value={formData.requestType}
-            onChange={(e: any) => setFormData({ ...formData, requestType: e.target.value })}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setFormData({ ...formData, requestType: e.target.value as RequestType })}
             className={`w-full p-2.5 rounded-xl text-xs border ${
               darkMode ? 'bg-slate-950 border-slate-800 text-white' : 'bg-slate-50 border-slate-200'
             }`}
