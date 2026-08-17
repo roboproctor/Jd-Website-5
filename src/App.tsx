@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { FieldServiceSection } from './components/FieldServiceSection';
+import { CommercialServiceSection } from './components/CommercialServiceSection';
 import { IrayDRSection } from './components/IrayDRSection';
 import { FujiRepairSection } from './components/FujiRepairSection';
 import { MobileXraySection } from './components/MobileXraySection';
@@ -29,7 +30,7 @@ export default function App() {
   // ScrollSpy for Active Nav Link
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['home', 'field-service', 'iray-dr', 'fuji-repairs', 'mobile-xrays', 'remote-support', 'billing', 'contact'];
+      const sections = ['home', 'field-service', 'commercial-services', 'iray-dr', 'fuji-repairs', 'mobile-xrays', 'remote-support', 'billing', 'contact'];
       const scrollPos = window.scrollY + 200;
 
       for (const section of sections) {
@@ -71,6 +72,12 @@ export default function App() {
         <FieldServiceSection 
           darkMode={darkMode} 
           onOpenQuoteModal={handleOpenQuoteModal} 
+        />
+
+        {/* Broad Commercial, Retail, IT & Electromechanical Section */}
+        <CommercialServiceSection
+          darkMode={darkMode}
+          onOpenQuoteModal={handleOpenQuoteModal}
         />
 
         <IrayDRSection 
